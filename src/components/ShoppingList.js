@@ -1,24 +1,38 @@
-import React from "react";
-import Item from "./Item";
+import React, { useState } from 'react'
+import Item from './Item'
 
 function ShoppingList({ items }) {
+  const [filterBy, setFilerBy] = useState('Filter by category')
+
+  function handleFilter(e) {
+    setFilerBy(e.target.value)
+  }
+
+  const displayItem = items.filter((item) => {
+    if (filterBy === 'Filter by category') {
+      return true
+    } else {
+      return item.category === filterBy
+    }
+  })
+
+  const itemList = displayItem.map((item) => (
+    <Item key={item.id} name={item.name} category={item.category} />
+  ))
+
   return (
-    <div className="ShoppingList">
-      <div className="Filter">
-        <select name="filter">
-          <option value="All">Filter by category</option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Dessert">Dessert</option>
+    <div className='ShoppingList'>
+      <div className='Filter'>
+        <select name='filter' onChange={handleFilter}>
+          <option value='All'>Filter by category</option>
+          <option value='Produce'>Produce</option>
+          <option value='Dairy'>Dairy</option>
+          <option value='Dessert'>Dessert</option>
         </select>
       </div>
-      <ul className="Items">
-        {items.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
-        ))}
-      </ul>
+      <ul className='Items'>{itemList}</ul>
     </div>
-  );
+  )
 }
 
-export default ShoppingList;
+export default ShoppingList
